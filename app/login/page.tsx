@@ -32,7 +32,7 @@ export default function LoginPage() {
     const cred = tab === "ADMIN" ? MOCK_CREDENTIALS.admin : MOCK_CREDENTIALS.user;
     if (email === cred.email && password === cred.password) {
       setAuth({ role: cred.role as Role, name: cred.name, email: cred.email, token: "mock-jwt-" + cred.role.toLowerCase() });
-      router.push(cred.role === "ADMIN" ? "/admin/dashboard" : "/dashboard");
+      router.push(cred.role === "ADMIN" ? "/admin/dashboard" : "/user/dashboard");
     } else {
       setError("Incorrect email or password. Please try again.");
     }

@@ -1,11 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { AdminShell } from "@/components/layout/admin-shell";
 import Link from "next/link";
 import {
   Package, Users, Wrench, CheckCircle2, ArrowUpRight,
   Plus, UserCheck, ArrowRightLeft, RotateCcw,
-  Laptop, Server, Monitor, Wifi, AlertCircle,
+  Laptop, Server, Monitor, Wifi,
   TrendingUp, AlertTriangle, Activity,
 } from "lucide-react";
 
@@ -81,6 +82,41 @@ const alerts = [
   },
 ];
 
+const manufacturerData: Record<string, { label: string; value: number; color: string }[]> = {
+  Laptops:      [
+    { label: "Apple",   value: 38, color: "#6090E3" },
+    { label: "Dell",    value: 27, color: "#818cf8" },
+    { label: "Lenovo",  value: 19, color: "#34d399" },
+    { label: "HP",      value: 11, color: "#fb923c" },
+    { label: "Other",   value: 5,  color: "#cbd5e1" },
+  ],
+  Monitors:     [
+    { label: "LG",       value: 34, color: "#6090E3" },
+    { label: "Dell",     value: 28, color: "#818cf8" },
+    { label: "Samsung",  value: 22, color: "#34d399" },
+    { label: "BenQ",     value: 10, color: "#fb923c" },
+    { label: "Other",    value: 6,  color: "#cbd5e1" },
+  ],
+  Servers:      [
+    { label: "Dell",    value: 41, color: "#6090E3" },
+    { label: "HP",      value: 30, color: "#818cf8" },
+    { label: "Cisco",   value: 18, color: "#34d399" },
+    { label: "IBM",     value: 11, color: "#fb923c" },
+  ],
+  Network:      [
+    { label: "Cisco",    value: 52, color: "#6090E3" },
+    { label: "Juniper",  value: 24, color: "#818cf8" },
+    { label: "Aruba",    value: 14, color: "#34d399" },
+    { label: "Other",    value: 10, color: "#cbd5e1" },
+  ],
+  Workstations: [
+    { label: "Dell",    value: 44, color: "#6090E3" },
+    { label: "HP",      value: 33, color: "#818cf8" },
+    { label: "Lenovo",  value: 15, color: "#34d399" },
+    { label: "Other",   value: 8,  color: "#cbd5e1" },
+  ],
+};
+
 const quickActions = [
   { label: "Add Asset",          icon: Plus,           href: "/admin/assets/new", primary: true  },
   { label: "Assign Asset",       icon: UserCheck,      href: "/admin/assets",     primary: false },
@@ -90,7 +126,50 @@ const quickActions = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
+// ── Pie chart helper ─────────────────────────────────────────────────────────
+
+function PieChart({ slices }: { slices: { label: string; value: number; color: string }[] }) {
+  const total = slices.reduce((s, d) => s + d.value, 0);
+  let cumulative = 0;
+  const cx = 60, cy = 60, r = 52, inner = 30;
+
+  const paths = slices.map((slice) => {
+    const pct      = slice.value / total;
+    const startAng = (cumulative / total) * 2 * Math.PI - Math.PI / 2;
+    cumulative    += slice.value;
+    const endAng   = (cumulative / total) * 2 * Math.PI - Math.PI / 2;
+    const large    = pct > 0.5 ? 1 : 0;
+    const x1 = cx + r * Math.cos(startAng), y1 = cy + r * Math.sin(startAng);
+    const x2 = cx + r * Math.cos(endAng),   y2 = cy + r * Math.sin(endAng);
+    const ix1 = cx + inner * Math.cos(startAng), iy1 = cy + inner * Math.sin(startAng);
+    const ix2 = cx + inner * Math.cos(endAng),   iy2 = cy + inner * Math.sin(endAng);
+    return (
+      <path
+        key={slice.label}
+        d={`M ${ix1} ${iy1} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} L ${ix2} ${iy2} A ${inner} ${inner} 0 ${large} 0 ${ix1} ${iy1} Z`}
+        fill={slice.color}
+        opacity="0.9"
+      />
+    );
+  });
+
+  return (
+    <svg viewBox="0 0 120 120" className="w-full h-full">
+      {paths}
+      <circle cx={cx} cy={cy} r={inner - 1} fill="#ffffff" />
+      <text x={cx} y={cy - 5} textAnchor="middle" fontSize="11" fontWeight="700" fill="#080f1e">{total}%</text>
+      <text x={cx} y={cy + 9} textAnchor="middle" fontSize="8" fill="#8a9fb8">total</text>
+    </svg>
+  );
+}
+
+// ── Page ─────────────────────────────────────────────────────────────────────
+
 export default function AdminDashboard() {
+  const categoryKeys = Object.keys(manufacturerData);
+  const [activeCategory, setActiveCategory] = useState(categoryKeys[0]);
+  const activeSlices = manufacturerData[activeCategory];
+
   return (
     <AdminShell userName="Secure Architect">
       <div className="space-y-5">
@@ -282,11 +361,11 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* ── Row 3: Recent activity + Needs Attention ── */}
-        <div className="grid grid-cols-3 gap-4">
+        {/* ── Row 3: Recent activity + Manufacturer breakdown ── */}
+        <div className="grid grid-cols-7 gap-4">
 
           {/* Recent activity */}
-          <div className="col-span-2 rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+          <div className="col-span-4 rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
@@ -313,13 +392,13 @@ export default function AdminDashboard() {
                     onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
                   >
                     <div
-                      className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
                       style={{ background: s.bg, color: s.dot }}
                     >
                       {s.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-semibold text-[#080f1e] leading-snug">{item.title}</p>
+                      <p className="text-[15px] font-semibold text-[#080f1e] leading-snug">{item.title}</p>
                       <p className="text-[12px] text-[#8a9fb8] mt-0.5">{item.desc}</p>
                     </div>
                     <span className="text-[11px] text-[#b0bfcc] font-medium shrink-0 mt-0.5 tabular-nums">{item.time}</span>
@@ -336,44 +415,56 @@ export default function AdminDashboard() {
             </Link>
           </div>
 
-          {/* Needs Attention */}
-          {/* <div className="rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+          {/* Manufacturer Breakdown */}
+          <div className="col-span-3 rounded-2xl p-5 flex flex-col" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
-                <AlertCircle size={13} className="text-primary" />
+                <Package size={12} className="text-primary" />
               </div>
-              <p className="text-[14px] font-bold text-[#080f1e] tracking-tight">Needs Attention</p>
+              <p className="text-[14px] font-bold text-[#080f1e] tracking-tight">By Manufacturer</p>
             </div>
-            <div className="space-y-2.5">
-              {alerts.map(({ id, icon, color, bg, border, label, count, desc }) => (
-                <div
-                  key={id}
-                  className="rounded-xl p-4 transition-all duration-150 cursor-default"
-                  style={{ background: bg, border: `1px solid ${border}` }}
-                  onMouseEnter={(e) => { e.currentTarget.style.filter = "brightness(0.97)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.filter = "none"; }}
-                >
-                  <div className="flex items-center justify-between mb-1.5">
-                    <div className="flex items-center gap-1.5">
-                      <span style={{ color }}>{icon}</span>
-                      <span className="text-[11px] font-bold uppercase tracking-[0.08em]" style={{ color }}>{label}</span>
-                    </div>
-                    <span className="text-[22px] font-bold leading-none" style={{ color }}>{count}</span>
+
+            {/* Category tabs */}
+            <div className="flex flex-wrap gap-1 mb-4">
+              {categoryKeys.map((cat) => {
+                const active = cat === activeCategory;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[12px] font-bold transition-all duration-150"
+                    style={active
+                      ? { background: "rgba(96,144,227,0.12)", color: "#1a4680", border: "1.5px solid rgba(96,144,227,0.28)" }
+                      : { background: "#f7f9fc", color: "#8a9fb8", border: "1.5px solid transparent" }
+                    }
+                    onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = "#edf2fb"; }}
+                    onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = "#f7f9fc"; }}
+                  >
+                    <span style={{ color: active ? "#6090E3" : "#b0bfcc" }}>{categoryIcons[cat]}</span>
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Pie chart */}
+            <div className="w-60 h-60 mx-auto mb-4">
+              <PieChart slices={activeSlices} />
+            </div>
+
+            {/* Legend */}
+            <div className="space-y-1.5 mt-auto">
+              {activeSlices.map((s) => (
+                <div key={s.label} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: s.color }} />
+                    <span className="text-[13px] font-medium text-[#5a7090]">{s.label}</span>
                   </div>
-                  <p className="text-[12px] text-[#8a9fb8] leading-snug">{desc}</p>
+                  <span className="text-[13px] font-bold text-[#080f1e]">{s.value}%</span>
                 </div>
               ))}
             </div>
-            <Link
-              href="/admin/assets"
-              className="flex items-center justify-center gap-2 mt-4 w-full py-2.5 rounded-xl text-[12px] font-semibold transition-all duration-150"
-              style={{ background: "rgba(96,144,227,0.07)", border: "1px solid rgba(96,144,227,0.18)", color: "#6090E3" }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(96,144,227,0.13)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(96,144,227,0.07)"; }}
-            >
-              Review All Issues <ArrowUpRight size={12} />
-            </Link>
-          </div> */}
+          </div>
 
         </div>
       </div>
