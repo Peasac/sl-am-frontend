@@ -77,7 +77,7 @@ export default function LoginPage() {
             <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(96,144,227,0.18)", border: "1px solid rgba(96,144,227,0.35)", boxShadow: "0 0 20px rgba(96,144,227,0.2)" }}>
               <ShieldCheck size={18} className="text-[#6090E3]" />
             </div>
-            <span className="text-white font-bold text-[25px] tracking-tight">Starlink</span>
+            <span className="text-white font-bold text-[20px] tracking-tight">Starlink Information Technology</span>
           </div>
 
           {/* Headline block */}

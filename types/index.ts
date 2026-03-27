@@ -9,6 +9,7 @@ export interface User {
   lastLogin: string;
   status: "active" | "inactive";
   avatar?: string;
+  assetCount:number;
 }
 
 export interface Asset {

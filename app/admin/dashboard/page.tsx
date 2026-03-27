@@ -337,7 +337,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Needs Attention */}
-          <div className="rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+          {/* <div className="rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                 <AlertCircle size={13} className="text-primary" />
@@ -373,7 +373,7 @@ export default function AdminDashboard() {
             >
               Review All Issues <ArrowUpRight size={12} />
             </Link>
-          </div>
+          </div> */}
 
         </div>
       </div>
