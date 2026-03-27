@@ -13,28 +13,16 @@ import {
 
 const topStats = [
   {
-    label: "Total Assets", value: "2,491", sub: "+38 this month", subColor: "#12B76A",
-    icon: Package, iconColor: "#6090E3",
-    accent: "#6090E3", accentBg: "rgba(96,144,227,0.08)", accentBorder: "rgba(96,144,227,0.16)",
-    barColor: "#6090E3", barPct: 100,
+    label: "Total Assets",  value: "2,491", sub: "+38 this month",  subColor: "#6090E3", icon: Package,      iconBg: "rgba(96,144,227,0.1)",  iconColor: "#6090E3",
   },
   {
-    label: "In Use", value: "1,847", sub: "74% utilisation", subColor: "#6090E3",
-    icon: CheckCircle2, iconColor: "#12B76A",
-    accent: "#12B76A", accentBg: "rgba(18,183,106,0.08)", accentBorder: "rgba(18,183,106,0.16)",
-    barColor: "#12B76A", barPct: 74,
+    label: "In Use",        value: "1,847", sub: "74% utilisation", subColor: "#12B76A", icon: CheckCircle2, iconBg: "rgba(18,183,106,0.1)",  iconColor: "#12B76A",
   },
   {
-    label: "Available", value: "512", sub: "Ready to assign", subColor: "#8a9fb8",
-    icon: ArrowUpRight, iconColor: "#f59e0b",
-    accent: "#f59e0b", accentBg: "rgba(245,158,11,0.07)", accentBorder: "rgba(245,158,11,0.16)",
-    barColor: "#f59e0b", barPct: 21,
+    label: "Available",     value: "512",   sub: "Ready to assign", subColor: "#8a9fb8", icon: ArrowUpRight, iconBg: "rgba(245,158,11,0.1)",  iconColor: "#f59e0b",
   },
   {
-    label: "Under Repair", value: "132", sub: "12 overdue", subColor: "#ef4444",
-    icon: Wrench, iconColor: "#ef4444",
-    accent: "#ef4444", accentBg: "rgba(239,68,68,0.07)", accentBorder: "rgba(239,68,68,0.16)",
-    barColor: "#ef4444", barPct: 5,
+    label: "Under Repair",  value: "132",   sub: "12 overdue",      subColor: "#ef4444", icon: Wrench,       iconBg: "rgba(239,68,68,0.08)",  iconColor: "#ef4444",
   },
 ];
 
@@ -69,10 +57,10 @@ const recentActivity = [
 ];
 
 const activityIcon: Record<string, { icon: React.ReactNode; dot: string; bg: string }> = {
-  assign:   { icon: <UserCheck   size={13} />, dot: "#12B76A", bg: "rgba(18,183,106,0.10)"  },
-  new:      { icon: <Plus        size={13} />, dot: "#6090E3", bg: "rgba(96,144,227,0.10)"  },
-  repair:   { icon: <Wrench      size={13} />, dot: "#ef4444", bg: "rgba(239,68,68,0.10)"   },
-  reassign: { icon: <ArrowRightLeft size={12} />, dot: "#f59e0b", bg: "rgba(245,158,11,0.10)" },
+  assign:   { icon: <UserCheck      size={13} />, dot: "#12B76A", bg: "rgba(18,183,106,0.10)"  },
+  new:      { icon: <Plus           size={13} />, dot: "#6090E3", bg: "rgba(96,144,227,0.10)"  },
+  repair:   { icon: <Wrench         size={13} />, dot: "#ef4444", bg: "rgba(239,68,68,0.10)"   },
+  reassign: { icon: <ArrowRightLeft size={12} />, dot: "#f59e0b", bg: "rgba(245,158,11,0.10)"  },
 };
 
 const alerts = [
@@ -116,10 +104,10 @@ export default function AdminDashboard() {
           {/* System status insight pill */}
           <div
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl"
-            style={{ background: "rgba(18,183,106,0.08)", border: "1px solid rgba(18,183,106,0.18)" }}
+            style={{ background: "rgba(96,144,227,0.08)", border: "1px solid rgba(96,144,227,0.2)" }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span className="text-[12px] font-semibold text-[#0a6644]">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            <span className="text-[12px] font-semibold text-[#1a4680]">
               98.4% fleet healthy · 12 items need attention
             </span>
           </div>
@@ -127,30 +115,22 @@ export default function AdminDashboard() {
 
         {/* ── Row 1: 4 stat cards ── */}
         <div className="grid grid-cols-4 gap-4">
-          {topStats.map(({ label, value, sub, subColor, icon: Icon, iconColor, accent, accentBg, accentBorder, barColor, barPct }) => (
+          {topStats.map(({ label, value, sub, subColor, icon: Icon, iconBg, iconColor }) => (
             <div
               key={label}
-              className="rounded-2xl p-5 relative overflow-hidden transition-shadow duration-150"
-              style={{ background: "#ffffff", border: `1px solid ${accentBorder}`, boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 4px 16px ${accentBg}, 0 1px 4px rgba(0,0,0,0.04)`; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; }}
+              className="rounded-2xl p-5 transition-shadow duration-150"
+              style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(96,144,227,0.1), 0 1px 4px rgba(0,0,0,0.04)"; e.currentTarget.style.border = "1px solid rgba(96,144,227,0.2)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; e.currentTarget.style.border = "1px solid #edf0f5"; }}
             >
-              {/* Accent top bar */}
-              <div className="absolute top-0 left-0 right-0 h-0.75 rounded-t-2xl" style={{ background: accent }} />
-
-              <div className="flex items-center justify-between mb-4 mt-1">
+              <div className="flex items-center justify-between mb-4">
                 <p className="text-[11px] font-bold text-[#8a9fb8] uppercase tracking-[0.1em]">{label}</p>
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: accentBg }}>
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: iconBg }}>
                   <Icon size={15} style={{ color: iconColor }} />
                 </div>
               </div>
               <p className="text-[1.85rem] font-bold text-[#080f1e] tracking-tight leading-none">{value}</p>
-              <p className="text-[12px] font-semibold mt-2" style={{ color: subColor }}>{sub}</p>
-
-              {/* Mini progress bar */}
-              <div className="mt-3 h-1 rounded-full" style={{ background: "rgba(0,0,0,0.05)" }}>
-                <div className="h-1 rounded-full" style={{ width: `${barPct}%`, background: barColor }} />
-              </div>
+              <p className="text-[12px] font-semibold mt-2.5" style={{ color: subColor }}>{sub}</p>
             </div>
           ))}
         </div>
@@ -233,7 +213,7 @@ export default function AdminDashboard() {
             <div className="pt-3.5" style={{ borderTop: "1px solid #edf0f5" }}>
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] font-semibold text-[#8a9fb8]">Coverage rate</span>
-                <span className="text-[12px] font-bold text-[#12B76A]">86%</span>
+                <span className="text-[12px] font-bold text-accent">86%</span>
               </div>
               <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: "#f0f4f8" }}>
                 <div className="h-full rounded-full" style={{ width: "86%", background: "linear-gradient(to right, #12B76A, #6090E3)" }} />
@@ -359,8 +339,8 @@ export default function AdminDashboard() {
           {/* Needs Attention */}
           <div className="rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(239,68,68,0.1)" }}>
-                <AlertCircle size={13} className="text-[#ef4444]" />
+              <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
+                <AlertCircle size={13} className="text-primary" />
               </div>
               <p className="text-[14px] font-bold text-[#080f1e] tracking-tight">Needs Attention</p>
             </div>

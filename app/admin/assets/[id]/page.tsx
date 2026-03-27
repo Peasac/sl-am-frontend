@@ -4,7 +4,10 @@ import Link from "next/link";
 import { AdminShell } from "@/components/layout/admin-shell";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { mockAssetDetail } from "@/lib/mock-data";
-import { Edit2, Tag, Cpu, Wifi, Shield, User, ChevronRight, Calendar, MapPin, DollarSign, CheckCircle } from "lucide-react";
+import {
+  Edit2, Tag, Cpu, Wifi, Shield, User,
+  ChevronRight, Calendar, MapPin, DollarSign, CheckCircle, Activity,
+} from "lucide-react";
 
 export default function AssetDetailPage() {
   const asset = mockAssetDetail;
@@ -31,7 +34,7 @@ export default function AssetDetailPage() {
             <div className="flex items-center gap-2.5 mb-2">
               <span
                 className="px-2.5 py-1 rounded-lg text-[11px] font-bold tracking-wide"
-                style={{ background: "rgba(96,144,227,0.1)", color: "#1a4680" }}
+                style={{ background: "rgba(96,144,227,0.1)", color: "#1a4680", border: "1px solid rgba(96,144,227,0.2)" }}
               >
                 {asset.type}
               </span>
@@ -48,16 +51,16 @@ export default function AssetDetailPage() {
             <button
               className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-[13px] font-semibold text-[#5a7090] transition-all duration-150"
               style={{ background: "#f7f9fc", border: "1px solid #edf0f5" }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "#edf0f5"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "#f7f9fc"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "#edf2fb"; e.currentTarget.style.border = "1px solid rgba(96,144,227,0.2)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "#f7f9fc"; e.currentTarget.style.border = "1px solid #edf0f5"; }}
             >
               <Edit2 size={14} /> Edit Asset
             </button>
             <button
               className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-[13px] font-semibold text-white transition-all duration-150"
-              style={{ background: "linear-gradient(135deg, #0e2a4e, #1a4680)", boxShadow: "0 3px 10px rgba(10,37,64,0.25)" }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #122f58, #1f5090)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #0e2a4e, #1a4680)"; }}
+              style={{ background: "linear-gradient(135deg, #1a4680, #6090E3)", boxShadow: "0 2px 10px rgba(96,144,227,0.35)" }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #1f5090, #6fa0f0)"; e.currentTarget.style.boxShadow = "0 4px 14px rgba(96,144,227,0.45)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #1a4680, #6090E3)"; e.currentTarget.style.boxShadow = "0 2px 10px rgba(96,144,227,0.35)"; }}
             >
               <Tag size={14} /> Export Label
             </button>
@@ -68,8 +71,12 @@ export default function AssetDetailPage() {
         <div className="grid grid-cols-3 gap-4">
 
           {/* Hardware Specs */}
-          <div className="col-span-2 rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
-            <div className="flex items-center gap-2 mb-5">
+          <div
+            className="col-span-2 rounded-2xl p-5 relative overflow-hidden"
+            style={{ background: "#ffffff", border: "1px solid rgba(96,144,227,0.16)", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-0.75 rounded-t-2xl" style={{ background: "#6090E3" }} />
+            <div className="flex items-center gap-2 mb-5 mt-1">
               <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                 <Cpu size={14} className="text-primary" />
               </div>
@@ -97,15 +104,18 @@ export default function AssetDetailPage() {
           </div>
 
           {/* Ownership */}
-          <div className="rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
-            <div className="flex items-center gap-2 mb-5">
+          <div
+            className="rounded-2xl p-5 relative overflow-hidden"
+            style={{ background: "#ffffff", border: "1px solid rgba(96,144,227,0.16)", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-0.75 rounded-t-2xl" style={{ background: "#6090E3" }} />
+            <div className="flex items-center gap-2 mb-5 mt-1">
               <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                 <User size={14} className="text-primary" />
               </div>
               <h2 className="text-[14px] font-bold text-[#080f1e] tracking-tight">Ownership</h2>
             </div>
 
-            {/* Assigned user */}
             <div className="flex items-center gap-3 mb-4 pb-4" style={{ borderBottom: "1px solid #edf0f5" }}>
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-[12px] font-bold shrink-0"
@@ -119,11 +129,11 @@ export default function AssetDetailPage() {
               </div>
             </div>
 
-            <div className="space-y-3">
-              <OwnerField icon={<MapPin size={12} />} label="Department" value={asset.department ?? "—"} />
-              <OwnerField icon={<User size={12} />} label="Owner" value={asset.owner ?? "—"} />
-              <OwnerField icon={<DollarSign size={12} />} label="Cost Center" value={asset.costCenter ?? "—"} />
-              <OwnerField icon={<MapPin size={12} />} label="Location" value={asset.location ?? "—"} />
+            <div className="space-y-2.5">
+              <OwnerField icon={<MapPin size={12} />}      label="Department"  value={asset.department ?? "—"} />
+              <OwnerField icon={<User size={12} />}        label="Owner"       value={asset.owner ?? "—"} />
+              <OwnerField icon={<DollarSign size={12} />}  label="Cost Center" value={asset.costCenter ?? "—"} />
+              <OwnerField icon={<MapPin size={12} />}      label="Location"    value={asset.location ?? "—"} />
             </div>
           </div>
         </div>
@@ -132,8 +142,12 @@ export default function AssetDetailPage() {
         <div className="grid grid-cols-2 gap-4">
 
           {/* Network & OS */}
-          <div className="rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
-            <div className="flex items-center gap-2 mb-5">
+          <div
+            className="rounded-2xl p-5 relative overflow-hidden"
+            style={{ background: "#ffffff", border: "1px solid rgba(96,144,227,0.16)", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-0.75 rounded-t-2xl" style={{ background: "#6090E3" }} />
+            <div className="flex items-center gap-2 mb-5 mt-1">
               <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                 <Wifi size={14} className="text-primary" />
               </div>
@@ -147,23 +161,31 @@ export default function AssetDetailPage() {
           </div>
 
           {/* Security */}
-          <div className="rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
-            <div className="flex items-center justify-between mb-5">
+          <div
+            className="rounded-2xl p-5 relative overflow-hidden"
+            style={{ background: "#ffffff", border: "1px solid rgba(18,183,106,0.2)", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-0.75 rounded-t-2xl" style={{ background: "#12B76A" }} />
+            <div className="flex items-center justify-between mb-5 mt-1">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(18,183,106,0.1)" }}>
-                  <Shield size={14} className="text-[#12B76A]" />
+                  <Shield size={14} className="text-accent" />
                 </div>
                 <h2 className="text-[14px] font-bold text-[#080f1e] tracking-tight">Security Status</h2>
               </div>
-              <div className="flex items-center gap-1.5">
-                <Calendar size={11} className="text-[#b0bfcc]" />
-                <span className="text-[11px] text-[#b0bfcc]">Audit: <span className="font-semibold text-[#8a9fb8]">{asset.lastAudit}</span></span>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg" style={{ background: "rgba(18,183,106,0.08)", border: "1px solid rgba(18,183,106,0.18)" }}>
+                <Activity size={11} className="text-accent" />
+                <span className="text-[11px] font-semibold text-[#0a6644]">All clear</span>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-3">
               <SecurityCard label="Encryption" value={asset.encryptionStatus ?? "—"} />
               <SecurityCard label="Antivirus" value={asset.antivirus ?? "—"} />
               <SecurityCard label="Compliance" value={asset.compliance ?? "—"} />
+            </div>
+            <div className="mt-4 flex items-center gap-2 pt-3.5" style={{ borderTop: "1px solid #edf0f5" }}>
+              <Calendar size={11} className="text-[#b0bfcc]" />
+              <span className="text-[11px] text-[#b0bfcc]">Last audit: <span className="font-semibold text-[#8a9fb8]">{asset.lastAudit}</span></span>
             </div>
           </div>
         </div>
@@ -183,7 +205,12 @@ function InfoField({ label, value, mono }: { label: string; value: string; mono?
 
 function OwnerField({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between py-2 px-3 rounded-xl" style={{ background: "#f7f9fc", border: "1px solid #edf0f5" }}>
+    <div
+      className="flex items-center justify-between py-2 px-3 rounded-xl transition-colors duration-150"
+      style={{ background: "#f7f9fc", border: "1px solid #edf0f5" }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = "#edf2fb"; e.currentTarget.style.border = "1px solid rgba(96,144,227,0.18)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = "#f7f9fc"; e.currentTarget.style.border = "1px solid #edf0f5"; }}
+    >
       <div className="flex items-center gap-2">
         <span className="text-[#b0bfcc]">{icon}</span>
         <span className="text-[12px] font-medium text-[#5a7090]">{label}</span>
@@ -195,9 +222,14 @@ function OwnerField({ icon, label, value }: { icon: React.ReactNode; label: stri
 
 function SecurityCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl p-3" style={{ background: "rgba(18,183,106,0.06)", border: "1px solid rgba(18,183,106,0.15)" }}>
+    <div
+      className="rounded-xl p-3 transition-all duration-150"
+      style={{ background: "rgba(18,183,106,0.06)", border: "1px solid rgba(18,183,106,0.15)" }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(18,183,106,0.1)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(18,183,106,0.06)"; }}
+    >
       <div className="flex items-center gap-1.5 mb-1.5">
-        <CheckCircle size={11} className="text-[#12B76A]" />
+        <CheckCircle size={11} className="text-accent" />
         <span className="text-[10px] font-bold text-[#8a9fb8] uppercase tracking-[0.08em]">{label}</span>
       </div>
       <p className="text-[12px] font-bold text-[#080f1e]">{value}</p>
