@@ -118,6 +118,7 @@ export const mockUsers: User[] = [
     department: "Information Technology",
     lastLogin: "2 hours ago",
     status: "active",
+    assetCount: 248,
   },
   {
     id: "u2",
@@ -127,6 +128,7 @@ export const mockUsers: User[] = [
     department: "Compliance & Risk",
     lastLogin: "Yesterday, 4:15 PM",
     status: "active",
+    assetCount: 14,
   },
   {
     id: "u3",
@@ -136,6 +138,7 @@ export const mockUsers: User[] = [
     department: "External Audit",
     lastLogin: "Oct 24, 2023",
     status: "active",
+    assetCount: 6,
   },
   {
     id: "u4",
@@ -145,6 +148,7 @@ export const mockUsers: User[] = [
     department: "Logistics",
     lastLogin: "Active Now",
     status: "active",
+    assetCount: 19,
   },
 ];
 
