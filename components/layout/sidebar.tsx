@@ -29,9 +29,10 @@ const adminNav: NavItem[] = [
 ];
 
 const userNav: NavItem[] = [
-  { label: "My Assets", href: "/dashboard/assets", icon: <Package size={16} /> },
-  { label: "Support", href: "/dashboard/support", icon: <HelpCircle size={16} /> },
-  { label: "Settings", href: "/dashboard/settings", icon: <Settings size={16} /> },
+  { label: "Dashboard", href: "user/dashboard", icon: <LayoutDashboard size={16}/> },
+  { label: "My Assets", href: "user/assets", icon: <Package size={16} /> },
+  // { label: "Support", href: "/dashboard/support", icon: <HelpCircle size={16} /> },
+  // { label: "Settings", href: "/dashboard/settings", icon: <Settings size={16} /> },
 ];
 
 interface SidebarProps {
@@ -53,9 +54,9 @@ export function Sidebar({ role, userName = "Secure Architect", orgName = "Asset 
 
   return (
     <aside
-      className="flex flex-col w-[220px] min-h-screen py-6"
+      className="flex flex-col w-[220px] min-h-screen py-4"
       style={{
-        background: "#ffffff",
+        background: "#f1f5f9",
         borderRight: "1px solid #edf0f5",
       }}
     >

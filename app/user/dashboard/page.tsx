@@ -78,7 +78,7 @@ export default function UserDashboardPage() {
                   style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}
                 >
                   <p className="text-[1.6rem] font-bold text-white leading-none">{value}</p>
-                  <p className="text-[10px] font-bold text-[#4a6a90] uppercase tracking-[0.1em] mt-1.5">{label}</p>
+                  <p className="text-[10px] font-bold text-[#4a6a90] uppercase tracking-widest mt-1.5">{label}</p>
                 </div>
               ))}
             </div>
