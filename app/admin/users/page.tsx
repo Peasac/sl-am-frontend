@@ -5,7 +5,7 @@ import { AdminShell } from "@/components/layout/admin-shell";
 import { mockUsers } from "@/lib/mock-data";
 import {
   UserPlus, Users, Package, ChevronLeft, ChevronRight,
-  MoreVertical, Search, UserCheck, Activity,
+  MoreVertical, Search, UserCheck, Activity, X, Mail, Send,
 } from "lucide-react";
 
 const avatarGradients = [
@@ -26,10 +26,38 @@ const statsCards = [
   { label: "Users without Assets", value: "182",   sub: "Needs assignment", subColor: "#f59e0b", icon: Package,   accent: "#f59e0b", accentBg: "rgba(245,158,11,0.07)",  accentBorder: "rgba(245,158,11,0.16)" },
 ];
 
+const focusOn  = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+  e.currentTarget.style.border = "1.5px solid #6090E3";
+  e.currentTarget.style.background = "#ffffff";
+  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(96,144,227,0.10)";
+};
+const focusOff = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+  e.currentTarget.style.border = "1.5px solid #edf0f5";
+  e.currentTarget.style.background = "#f7f9fc";
+  e.currentTarget.style.boxShadow = "none";
+};
+
 export default function UsersPage() {
   const [search, setSearch] = useState("");
   const [department, setDepartment] = useState("All Departments");
   const [roleFilter, setRoleFilter] = useState("All Roles");
+
+  // Create user modal state
+  const [showCreate, setShowCreate]   = useState(false);
+  const [newName, setNewName]         = useState("");
+  const [newEmail, setNewEmail]       = useState("");
+  const [newDept, setNewDept]         = useState("Engineering");
+  const [emailSent, setEmailSent]     = useState(false);
+
+  function handleSendEmail() {
+    if (!newEmail) return;
+    setEmailSent(true);
+  }
+
+  function handleCreateUser() {
+    setShowCreate(false);
+    setNewName(""); setNewEmail(""); setNewDept("Engineering"); setEmailSent(false);
+  }
 
   const filtered = mockUsers.filter((u) => {
     const q = search.toLowerCase();
@@ -52,6 +80,7 @@ export default function UsersPage() {
             </p>
           </div>
           <button
+            onClick={() => { setShowCreate(true); setEmailSent(false); }}
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-[13px] font-semibold text-white transition-all duration-150"
             style={{ background: "linear-gradient(135deg, #1a4680, #6090E3)", boxShadow: "0 2px 10px rgba(96,144,227,0.35)" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #1f5090, #6fa0f0)"; e.currentTarget.style.boxShadow = "0 4px 14px rgba(96,144,227,0.45)"; }}
@@ -231,6 +260,146 @@ export default function UsersPage() {
         </div>
 
       </div>
+
+      {/* ── Create User Modal ── */}
+      {showCreate && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(8,15,30,0.55)", backdropFilter: "blur(4px)" }}
+          onClick={(e) => { if (e.target === e.currentTarget) { setShowCreate(false); setEmailSent(false); } }}
+        >
+          <div
+            className="w-full max-w-md rounded-2xl p-6 space-y-5"
+            style={{ background: "#ffffff", boxShadow: "0 24px 60px rgba(8,15,30,0.2)", border: "1px solid #edf0f5" }}
+          >
+            {/* Header */}
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
+                  <UserPlus size={15} className="text-primary" />
+                </div>
+                <div>
+                  <h2 className="text-[15px] font-bold text-[#080f1e] tracking-tight">Create New User</h2>
+                  <p className="text-[11px] text-[#8a9fb8] mt-0.5">Add a user and optionally send them an invite.</p>
+                </div>
+              </div>
+              <button
+                onClick={() => { setShowCreate(false); setEmailSent(false); }}
+                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#b0bfcc] transition-all duration-150"
+                onMouseEnter={(e) => { e.currentTarget.style.background = "#f0f4f8"; e.currentTarget.style.color = "#5a7090"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#b0bfcc"; }}
+              >
+                <X size={14} />
+              </button>
+            </div>
+
+            {/* Fields */}
+            <div className="space-y-4">
+              {/* Name */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-[#8a9fb8] uppercase tracking-[0.08em]">
+                  Full Name <span className="text-primary">*</span>
+                </label>
+                <input
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder="e.g. Jordan Lee"
+                  className="px-3.5 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all duration-150 placeholder:text-[#b8c8d8] w-full"
+                  style={{ background: "#f7f9fc", border: "1.5px solid #edf0f5", color: "#080f1e" }}
+                  onFocus={focusOn}
+                  onBlur={focusOff}
+                />
+              </div>
+
+              {/* Email + Send button */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-[#8a9fb8] uppercase tracking-[0.08em]">
+                  Email Address <span className="text-primary">*</span>
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    value={newEmail}
+                    onChange={(e) => { setNewEmail(e.target.value); setEmailSent(false); }}
+                    placeholder="e.g. jordan@company.com"
+                    type="email"
+                    className="flex-1 px-3.5 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all duration-150 placeholder:text-[#b8c8d8]"
+                    style={{ background: "#f7f9fc", border: "1.5px solid #edf0f5", color: "#080f1e" }}
+                    onFocus={focusOn}
+                    onBlur={focusOff}
+                  />
+                  <button
+                    onClick={handleSendEmail}
+                    disabled={!newEmail}
+                    title="Send invite email"
+                    className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-[12px] font-bold transition-all duration-150 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
+                    style={emailSent
+                      ? { background: "rgba(18,183,106,0.1)", color: "#0a6644", border: "1.5px solid rgba(18,183,106,0.2)" }
+                      : { background: "rgba(96,144,227,0.1)", color: "#1a4680", border: "1.5px solid rgba(96,144,227,0.2)" }
+                    }
+                    onMouseEnter={(e) => { if (newEmail && !emailSent) e.currentTarget.style.background = "rgba(96,144,227,0.18)"; }}
+                    onMouseLeave={(e) => { if (!emailSent) e.currentTarget.style.background = "rgba(96,144,227,0.1)"; }}
+                  >
+                    {emailSent ? (
+                      <>
+                        <svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#0a6644" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Sent
+                      </>
+                    ) : (
+                      <><Send size={12} /> Send Email</>
+                    )}
+                  </button>
+                </div>
+                {emailSent && (
+                  <p className="text-[11px] font-medium" style={{ color: "#12B76A" }}>
+                    Invite email sent to <span className="font-bold">{newEmail}</span>
+                  </p>
+                )}
+              </div>
+
+              {/* Department */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-[#8a9fb8] uppercase tracking-[0.08em]">Department</label>
+                <select
+                  value={newDept}
+                  onChange={(e) => setNewDept(e.target.value)}
+                  className="px-3.5 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all duration-150 appearance-none cursor-pointer w-full"
+                  style={{ background: "#f7f9fc", border: "1.5px solid #edf0f5", color: "#3a5070" }}
+                  onFocus={focusOn}
+                  onBlur={focusOff}
+                >
+                  {["Engineering", "Design", "HR", "Finance", "Operations"].map((d) => (
+                    <option key={d}>{d}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-2 pt-1" style={{ borderTop: "1px solid #edf0f5" }}>
+              <button
+                onClick={() => { setShowCreate(false); setEmailSent(false); }}
+                className="flex-1 py-2.5 rounded-xl text-[13px] font-semibold text-[#5a7090] transition-all duration-150"
+                style={{ background: "#f7f9fc", border: "1px solid #edf0f5" }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "#edf0f5"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "#f7f9fc"; }}
+              >
+                Cancel
+              </button>
+              <button
+                disabled={!newName || !newEmail}
+                onClick={handleCreateUser}
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold text-white transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+                style={{ background: "linear-gradient(135deg, #1a4680, #6090E3)", boxShadow: (newName && newEmail) ? "0 2px 10px rgba(96,144,227,0.35)" : "none" }}
+                onMouseEnter={(e) => { if (newName && newEmail) e.currentTarget.style.background = "linear-gradient(135deg, #1f5090, #6fa0f0)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #1a4680, #6090E3)"; }}
+              >
+                <UserPlus size={14} /> Create User
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </AdminShell>
   );
 }
