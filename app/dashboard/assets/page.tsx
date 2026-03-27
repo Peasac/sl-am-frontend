@@ -15,8 +15,8 @@ const typeConfig: Record<string, { icon: React.ReactNode; bg: string; color: str
 const fallbackConfig = { icon: <Package size={20} />, bg: "rgba(100,116,139,0.1)", color: "#64748b", accent: "#64748b", accentBorder: "rgba(100,116,139,0.18)" };
 
 export default function MyAssetsPage() {
-  const activeCount  = userAssets.filter((a) => a.status === "ACTIVE").length;
-  const repairCount  = userAssets.filter((a) => a.status === "REPAIR").length;
+  const compliantCount = userAssets.filter((a) => a.status === "COMPLIANT").length;
+  const criticalCount = userAssets.filter((a) => a.status === "CRITICAL").length;
 
   return (
     <UserShell userName="Alex">
@@ -31,9 +31,9 @@ export default function MyAssetsPage() {
         {/* Summary strip */}
         <div className="grid grid-cols-3 gap-4">
           {[
-            { label: "Total Assigned", value: userAssets.length.toString(), color: "#6090E3", bg: "rgba(96,144,227,0.08)", border: "rgba(96,144,227,0.18)", accent: "#6090E3" },
-            { label: "Active",         value: activeCount.toString(),        color: "#12B76A", bg: "rgba(18,183,106,0.08)", border: "rgba(18,183,106,0.18)", accent: "#12B76A" },
-            { label: "Under Repair",   value: repairCount.toString(),        color: "#ef4444", bg: "rgba(239,68,68,0.08)",  border: "rgba(239,68,68,0.18)",  accent: "#ef4444" },
+            { label: "Total Assigned", value: userAssets.length.toString(),     color: "#6090E3", bg: "rgba(96,144,227,0.08)", border: "rgba(96,144,227,0.18)", accent: "#6090E3" },
+            { label: "Compliant",      value: compliantCount.toString(),        color: "#12B76A", bg: "rgba(18,183,106,0.08)", border: "rgba(18,183,106,0.18)", accent: "#12B76A" },
+            { label: "Critical",       value: criticalCount.toString(),         color: "#ef4444", bg: "rgba(239,68,68,0.08)",  border: "rgba(239,68,68,0.18)",  accent: "#ef4444" },
           ].map(({ label, value, color, bg, border, accent }) => (
             <div
               key={label}
