@@ -7,8 +7,16 @@ import {
   Package, Users, Wrench, CheckCircle2, ArrowUpRight,
   Plus, UserCheck, ArrowRightLeft, RotateCcw,
   Laptop, Server, Monitor, Wifi,
-  TrendingUp, AlertTriangle, Activity,
+  TrendingUp, AlertTriangle, Activity,Computer
 } from "lucide-react";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -36,11 +44,11 @@ const categoryBars = [
 ];
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  Laptops:      <Laptop  size={13} />,
-  Monitors:     <Monitor size={13} />,
-  Servers:      <Server  size={13} />,
-  Network:      <Wifi    size={13} />,
-  Workstations: <Package size={13} />,
+  Laptops:      <Laptop  size={20} />,
+  Monitors:     <Monitor size={20} />,
+  Servers:      <Server  size={20} />,
+  Network:      <Wifi    size={20} />,
+  Workstations: <Computer size={20} />,
 };
 
 const userInsights = [
@@ -177,11 +185,11 @@ export default function AdminDashboard() {
         {/* Header + insight */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-[22px] font-bold text-[#080f1e] tracking-tight">Asset Management</h1>
+            <h1 className="text-[32px] font-bold text-primary tracking-tight">Asset Management</h1>
             <p className="text-[13px] text-[#8a9fb8] mt-0.5">Overview of assets, allocation, and user assignments.</p>
           </div>
           {/* System status insight pill */}
-          <div
+          {/* <div
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl"
             style={{ background: "rgba(96,144,227,0.08)", border: "1px solid rgba(96,144,227,0.2)" }}
           >
@@ -189,28 +197,28 @@ export default function AdminDashboard() {
             <span className="text-[12px] font-semibold text-[#1a4680]">
               98.4% fleet healthy · 12 items need attention
             </span>
-          </div>
+          </div> */}
         </div>
 
         {/* ── Row 1: 4 stat cards ── */}
         <div className="grid grid-cols-4 gap-4">
+          
           {topStats.map(({ label, value, sub, subColor, icon: Icon, iconBg, iconColor }) => (
-            <div
+            <Card
               key={label}
-              className="rounded-2xl p-5 transition-shadow duration-150"
-              style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(96,144,227,0.1), 0 1px 4px rgba(0,0,0,0.04)"; e.currentTarget.style.border = "1px solid rgba(96,144,227,0.2)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; e.currentTarget.style.border = "1px solid #edf0f5"; }}
+              className="sa-card gap-0 rounded-2xl px-5 py-5 shadow-none  hover:shadow-[0_12px_28px_rgb(20_27_44/9%)]"
             >
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-[11px] font-bold text-[#8a9fb8] uppercase tracking-[0.1em]">{label}</p>
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: iconBg }}>
-                  <Icon size={15} style={{ color: iconColor }} />
-                </div>
-              </div>
-              <p className="text-[1.85rem] font-bold text-[#080f1e] tracking-tight leading-none">{value}</p>
-              <p className="text-[12px] font-semibold mt-2.5" style={{ color: subColor }}>{sub}</p>
-            </div>
+              <CardHeader className="mb-0 p-0">
+                <CardTitle className="text-[12px] font-bold flex items-center text-on-surface-variant uppercase tracking-widest">{label}</CardTitle>
+                <CardAction className="w-8 h-8 rounded-xl flex items-center justify-center" >
+                  <Icon size={25} style={{color:iconColor}} />
+                </CardAction>
+              </CardHeader>
+              <CardContent className="p-0">
+                <p className="text-[2.3rem] font-bold font-mono text-on-surface  tracking-tight Mano leading-none">{value}</p>
+                
+              </CardContent>
+            </Card>
           ))}
         </div>
 
@@ -218,43 +226,40 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-3 gap-4">
 
           {/* Asset distribution */}
-          <div className="col-span-1 rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+          <div className="sa-card col-span-2 rounded-2xl p-5 shadow-none">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
+                {/* <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                   <Activity size={12} className="text-primary" />
-                </div>
-                <p className="text-[14px] font-bold text-[#080f1e] tracking-tight">By Category</p>
+                </div> */}
+                <p className="text-[22px] font-bold text-on-surface tracking-tight">By Category</p>
               </div>
-              <span className="text-[10px] font-bold text-primary uppercase tracking-[0.08em] px-2.5 py-1 rounded-lg" style={{ background: "rgba(96,144,227,0.08)", border: "1px solid rgba(96,144,227,0.16)" }}>
+              {/* <span className="text-[10px] font-bold text-primary uppercase tracking-[0.08em] px-2.5 py-1 rounded-lg bg-secondary-container">
                 2,491 total
-              </span>
+              </span> */}
             </div>
             <div className="space-y-3.5">
               {categoryBars.map((bar) => (
                 <div
                   key={bar.label}
-                  className="group rounded-xl px-3 py-2.5 -mx-1 transition-colors duration-150"
-                  style={{}}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = bar.trackBg; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                  className="group -mx-1 rounded-xl px-3 py-2.5 "
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: bar.trackBg }}>
-                        <span style={{ color: bar.color }}>{categoryIcons[bar.label]}</span>
+                      <div className="w-8 h-8 rounded-md flex items-center justify-center primary" >
+                        <span>{categoryIcons[bar.label]}</span>
                       </div>
-                      <span className="text-[12px] font-semibold text-[#3a5070]">{bar.label}</span>
+                      <span className="text-[14px] font-semibold primary text-on-surface">{bar.label}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-bold text-[#8a9fb8]">{bar.pct}%</span>
-                      <span className="text-[12px] font-bold text-[#080f1e]">{bar.count.toLocaleString()}</span>
+                      <span className="text-[11px] font-bold text-on-surface-variant">{bar.pct}%</span>
+                      <span className="text-[12px] font-bold text-on-surface">{bar.count.toLocaleString()}</span>
                     </div>
                   </div>
-                  <div className="w-full h-1.5 rounded-full" style={{ background: "#f0f4f8" }}>
+                  <div className="w-full h-1.5 rounded-full bg-surface-container-low">
                     <div
-                      className="h-1.5 rounded-full transition-all duration-500"
-                      style={{ width: `${bar.pct}%`, background: bar.color }}
+                      className="h-1.5 rounded-full transition-all duration-500 bg-primary"
+                      style={{ width: `${bar.pct}%`, background: "primary" }}
                     />
                   </div>
                 </div>
@@ -263,99 +268,75 @@ export default function AdminDashboard() {
           </div>
 
           {/* User insights */}
-          <div className="rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+          {/* <div className="sa-card rounded-2xl p-5 shadow-none">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                   <Users size={12} className="text-primary" />
                 </div>
-                <p className="text-[14px] font-bold text-[#080f1e] tracking-tight">User Insights</p>
+                <p className="text-[14px] font-bold text-on-surface tracking-tight">User Insights</p>
               </div>
             </div>
             <div className="space-y-2.5 mb-5">
               {userInsights.map(({ label, value, color, dot }) => (
                 <div
                   key={label}
-                  className="flex items-center justify-between py-2.5 px-3 rounded-xl transition-colors duration-150"
-                  style={{ background: "#f7f9fc", border: "1px solid #edf0f5" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "#edf2fb"; e.currentTarget.style.border = "1px solid rgba(96,144,227,0.15)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "#f7f9fc"; e.currentTarget.style.border = "1px solid #edf0f5"; }}
+                  className="flex items-center justify-between rounded-xl border border-(--sa-ghost-border) bg-surface px-3 py-2.5 transition-colors duration-150 hover:bg-surface-container-low"
                 >
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full" style={{ background: dot }} />
-                    <span className="text-[12px] font-medium text-[#5a7090]">{label}</span>
+                    <span className="text-[12px] font-medium text-on-surface">{label}</span>
                   </div>
                   <span className="text-[14px] font-bold" style={{ color }}>{value}</span>
                 </div>
               ))}
             </div>
-            <div className="pt-3.5" style={{ borderTop: "1px solid #edf0f5" }}>
+            <div className="pt-3.5 border-t border-(--sa-ghost-border)">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-semibold text-[#8a9fb8]">Coverage rate</span>
-                <span className="text-[12px] font-bold text-accent">86%</span>
+                <span className="text-[11px] font-semibold text-on-surface-variant">Coverage rate</span>
+                <span className="text-[12px] font-bold text-tertiary">86%</span>
               </div>
-              <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: "#f0f4f8" }}>
+              <div className="w-full h-2 rounded-full overflow-hidden bg-surface-container-low">
                 <div className="h-full rounded-full" style={{ width: "86%", background: "linear-gradient(to right, #12B76A, #6090E3)" }} />
               </div>
-              <p className="text-[11px] text-[#b0bfcc] mt-1.5">of users have at least one active asset</p>
+              <p className="text-[11px] text-on-surface-variant mt-1.5">of users have at least one active asset</p>
             </div>
-          </div>
+          </div> */}
 
           {/* Quick actions */}
-          <div className="rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+          <div className="sa-card rounded-2xl p-5 shadow-none">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                 <TrendingUp size={12} className="text-primary" />
               </div>
-              <p className="text-[14px] font-bold text-[#080f1e] tracking-tight">Quick Actions</p>
+              <p className="text-[14px] font-bold text-on-surface tracking-tight">Quick Actions</p>
             </div>
             <div className="space-y-2">
               {quickActions.map(({ label, icon: Icon, href, primary }) => (
-                <Link
+                <Button
                   key={label}
-                  href={href}
-                  className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-[13px] font-semibold transition-all duration-150"
-                  style={primary ? {
-                    background: "linear-gradient(135deg, #1a4680, #6090E3)",
-                    color: "#ffffff",
-                    boxShadow: "0 2px 10px rgba(96,144,227,0.35)",
-                  } : {
-                    background: "#f7f9fc",
-                    color: "#3a5070",
-                    border: "1px solid #edf0f5",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (primary) {
-                      e.currentTarget.style.background = "linear-gradient(135deg, #1f5090, #6fa0f0)";
-                      e.currentTarget.style.boxShadow = "0 4px 14px rgba(96,144,227,0.45)";
-                    } else {
-                      e.currentTarget.style.background = "#edf2fb";
-                      e.currentTarget.style.border = "1px solid rgba(96,144,227,0.2)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (primary) {
-                      e.currentTarget.style.background = "linear-gradient(135deg, #1a4680, #6090E3)";
-                      e.currentTarget.style.boxShadow = "0 2px 10px rgba(96,144,227,0.35)";
-                    } else {
-                      e.currentTarget.style.background = "#f7f9fc";
-                      e.currentTarget.style.border = "1px solid #edf0f5";
-                    }
-                  }}
+                  asChild
+                  variant={primary ? "default" : "outline"}
+                  className={primary
+                    ? "sa-primary-gradient h-auto w-full justify-start gap-3 rounded-xl px-4 py-3 text-[13px] font-semibold hover:brightness-110"
+                    : "h-auto w-full justify-start gap-3 rounded-xl border-(--sa-ghost-border) bg-surface px-4 py-3 text-[13px] font-semibold text-on-surface hover:bg-surface-container-low"
+                  }
                 >
-                  <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
-                    style={{ background: primary ? "rgba(255,255,255,0.18)" : "rgba(96,144,227,0.1)" }}
-                  >
-                    <Icon size={14} style={{ color: primary ? "#ffffff" : "#6090E3" }} />
-                  </div>
-                  {label}
-                  {primary && (
-                    <span className="ml-auto text-[10px] font-bold uppercase tracking-[0.08em] px-2 py-0.5 rounded-md" style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.85)" }}>
-                      New
+                  <Link href={href}>
+                    <span
+                      className="flex h-7 w-7 items-center justify-center rounded-lg shrink-0"
+                      style={{ background: primary ? "rgba(255,255,255,0.18)" : "rgba(96,144,227,0.1)" }}
+                    >
+                      <Icon size={14} style={{ color: primary ? "#ffffff" : "#6090E3" }} />
                     </span>
-                  )}
-                </Link>
+                    {label}
+                    {primary && (
+                      <span className="ml-auto rounded-md bg-white/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-white/90">
+                        New
+                      </span>
+                    )}
+                  </Link>
+                </Button>
               ))}
             </div>
           </div>
@@ -365,21 +346,17 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-7 gap-4">
 
           {/* Recent activity */}
-          <div className="col-span-4 rounded-2xl p-5" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+          <div className="sa-card col-span-4 rounded-2xl p-5 shadow-none">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                   <Activity size={12} className="text-primary" />
                 </div>
-                <p className="text-[14px] font-bold text-[#080f1e] tracking-tight">Recent Activity</p>
+                <p className="text-[14px] font-bold text-on-surface tracking-tight">Recent Activity</p>
               </div>
-              <button
-                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#b0bfcc] transition-all duration-150"
-                onMouseEnter={(e) => { e.currentTarget.style.background = "#f0f4f8"; e.currentTarget.style.color = "#6090E3"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#b0bfcc"; }}
-              >
+              <Button variant="ghost" size="icon-sm" className="text-on-surface-variant hover:text-primary hover:bg-surface-container-low">
                 <RotateCcw size={13} />
-              </button>
+              </Button>
             </div>
             <div className="space-y-0.5">
               {recentActivity.map((item) => {
@@ -387,9 +364,7 @@ export default function AdminDashboard() {
                 return (
                   <div
                     key={item.id}
-                    className="flex gap-3 px-3 py-3 rounded-xl transition-all duration-100 group cursor-default"
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "#f7f9fc"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                    className="group flex cursor-default gap-3 rounded-xl px-3 py-3 transition-all duration-100 hover:bg-surface-container-low"
                   >
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
@@ -398,30 +373,29 @@ export default function AdminDashboard() {
                       {s.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[15px] font-semibold text-[#080f1e] leading-snug">{item.title}</p>
-                      <p className="text-[12px] text-[#8a9fb8] mt-0.5">{item.desc}</p>
+                      <p className="text-[15px] font-semibold text-on-surface leading-snug">{item.title}</p>
+                      <p className="text-[12px] text-on-surface-variant mt-0.5">{item.desc}</p>
                     </div>
-                    <span className="text-[11px] text-[#b0bfcc] font-medium shrink-0 mt-0.5 tabular-nums">{item.time}</span>
+                    <span className="text-[11px] text-on-surface-variant font-medium shrink-0 mt-0.5 tabular-nums">{item.time}</span>
                   </div>
                 );
               })}
             </div>
             <Link
               href="/admin/assets"
-              className="flex items-center justify-center gap-1.5 mt-3 pt-3 text-[12px] font-semibold text-primary hover:text-[#1a4680] transition-colors duration-150"
-              style={{ borderTop: "1px solid #edf0f5" }}
+              className="mt-3 flex items-center justify-center gap-1.5 border-t border-(--sa-ghost-border) pt-3 text-[12px] font-semibold text-primary transition-colors duration-150 hover:text-primary/80"
             >
               View all activity <ArrowUpRight size={12} />
             </Link>
           </div>
 
           {/* Manufacturer Breakdown */}
-          <div className="col-span-3 rounded-2xl p-5 flex flex-col" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+          <div className="sa-card col-span-3 flex flex-col rounded-2xl p-5 shadow-none">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                 <Package size={12} className="text-primary" />
               </div>
-              <p className="text-[14px] font-bold text-[#080f1e] tracking-tight">By Manufacturer</p>
+              <p className="text-[14px] font-bold text-on-surface tracking-tight">By Manufacturer</p>
             </div>
 
             {/* Category tabs */}
@@ -432,13 +406,10 @@ export default function AdminDashboard() {
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[12px] font-bold transition-all duration-150"
-                    style={active
-                      ? { background: "rgba(96,144,227,0.12)", color: "#1a4680", border: "1.5px solid rgba(96,144,227,0.28)" }
-                      : { background: "#f7f9fc", color: "#8a9fb8", border: "1.5px solid transparent" }
+                    className={active
+                      ? "flex items-center gap-1 rounded-lg border border-primary/30 bg-secondary-container px-2.5 py-1 text-[12px] font-bold text-primary transition-all duration-150"
+                      : "flex items-center gap-1 rounded-lg border border-transparent bg-surface px-2.5 py-1 text-[12px] font-bold text-on-surface-variant transition-all duration-150 hover:bg-surface-container-low"
                     }
-                    onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = "#edf2fb"; }}
-                    onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = "#f7f9fc"; }}
                   >
                     <span style={{ color: active ? "#6090E3" : "#b0bfcc" }}>{categoryIcons[cat]}</span>
                     {cat}
@@ -458,9 +429,9 @@ export default function AdminDashboard() {
                 <div key={s.label} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: s.color }} />
-                    <span className="text-[13px] font-medium text-[#5a7090]">{s.label}</span>
+                    <span className="text-[13px] font-medium text-on-surface">{s.label}</span>
                   </div>
-                  <span className="text-[13px] font-bold text-[#080f1e]">{s.value}%</span>
+                  <span className="text-[13px] font-bold text-on-surface">{s.value}%</span>
                 </div>
               ))}
             </div>

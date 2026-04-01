@@ -1,6 +1,17 @@
 "use client";
 
-import { Bell, HelpCircle, Search } from "lucide-react";
+import { Bell, HelpCircle, Moon, Search, Sun } from "lucide-react";
+
+import { useTheme } from "next-themes";
+
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 
 interface NavbarProps {
   placeholder?: string;
@@ -8,6 +19,8 @@ interface NavbarProps {
 }
 
 export function Navbar({ placeholder = "Search assets...", userName = "SA" }: NavbarProps) {
+  const { setTheme } = useTheme();
+
   const initials = userName
     .split(" ")
     .map((n) => n[0])
@@ -16,34 +29,54 @@ export function Navbar({ placeholder = "Search assets...", userName = "SA" }: Na
     .toUpperCase();
 
   return (
-    <header
-      className="h-14.5 flex items-center justify-between px-6 shrink-0 bg-surface"
-    >
+    <header className="flex h-14 items-center justify-between bg-surface px-6 shrink-0">
       {/* Search */}
       <div className="relative w-64 group">
-        <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant transition-colors duration-150 group-focus-within:text-primary" />
-        <input
+        <Search
+          size={14}
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors duration-150 group-focus-within:text-primary"
+        />
+        <Input
           type="text"
           placeholder={placeholder}
-          className="sa-input w-full pl-10 pr-4 py-2 text-[13px] rounded-md placeholder:text-on-surface-variant"
+          className="h-9 rounded-lg pl-9 text-[13px]"
         />
       </div>
 
       {/* Right icons */}
       <div className="flex items-center gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="rounded-lg text-muted-foreground hover:text-primary">
+              <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-36">
+            <DropdownMenuItem onClick={() => setTheme("light")}>
+              Light
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>
+              Dark
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("system")}>
+              System
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         {[Bell, HelpCircle].map((Icon, i) => (
-          <button
+          <Button
             key={i}
-            className="w-8 h-8 flex items-center justify-center rounded-xl text-on-surface-variant transition-all duration-150 hover:text-primary hover:bg-surface-container-low"
+            variant="ghost"
+            size="icon"
+            className="size-8 rounded-lg text-muted-foreground hover:text-primary"
           >
             <Icon size={17} />
-          </button>
+          </Button>
         ))}
         <div
-          className="w-8 h-8 rounded-xl flex items-center justify-center text-white text-[11px] font-bold ml-1 cursor-pointer"
-          style={{
-            background: "linear-gradient(135deg, #001d44, #00326b)",
-          }}
+          className="sa-primary-gradient ml-1 flex size-8 cursor-pointer items-center justify-center rounded-lg text-[11px] font-bold"
         >
           {initials}
         </div>

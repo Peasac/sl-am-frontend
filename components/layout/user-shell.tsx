@@ -1,7 +1,7 @@
 "use client";
 
-import { Sidebar } from "./sidebar";
-import { Navbar } from "./navbar";
+import { Sidebar } from "@/components/layout/sidebar";
+import { Navbar } from "@/components/layout/navbar";
 
 interface UserShellProps {
   children: React.ReactNode;

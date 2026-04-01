@@ -1,37 +1,22 @@
+import * as React from "react";
+
 import { cn } from "@/lib/utils";
-import React from "react";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  icon?: React.ReactNode;
-  error?: string;
-}
-
-export function Input({ label, icon, error, className, ...props }: InputProps) {
+function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
-    <div className="flex flex-col gap-2">
-      {label && (
-        <label className="text-sm font-medium text-on-surface-variant">
-          {label}
-        </label>
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        "sa-input flex h-8 w-full min-w-0 rounded-md px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none",
+        "placeholder:text-muted-foreground",
+        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+        "focus-visible:ring-3 focus-visible:ring-ring/60",
+        className
       )}
-      <div className="relative">
-        {icon && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">
-            {icon}
-          </span>
-        )}
-        <input
-          className={cn(
-            "sa-input w-full rounded-md px-3 py-2.5 text-sm placeholder:text-on-surface-variant",
-            icon && "pl-9",
-            error && "border-error focus:border-error",
-            className
-          )}
-          {...props}
-        />
-      </div>
-      {error && <p className="text-xs text-error">{error}</p>}
-    </div>
+      {...props}
+    />
   );
 }
+
+export { Input };
