@@ -10,7 +10,7 @@ interface AdminShellProps {
 
 export function AdminShell({ children, userName = "Secure Architect" }: AdminShellProps) {
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="sa-shell flex h-screen overflow-hidden">
       <Sidebar role="ADMIN" userName={userName} orgName="Asset Management" newAssetHref="/admin/assets/new" />
       <div className="flex flex-col flex-1 overflow-hidden">
         <Navbar placeholder="Quick search assets..." userName={userName} />

@@ -81,20 +81,17 @@ export default function AssetInventoryPage() {
         </div>
 
         {/* Filters bar */}
-        <div className="rounded-2xl p-4" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+        <div className="rounded-2xl p-4 bg-surface-container-low">
           <div className="flex gap-4 items-end flex-wrap">
             <div className="space-y-1.5">
               <label className="block text-[11px] font-bold text-[#8a9fb8] uppercase tracking-[0.1em]">Quick Search</label>
               <div className="relative group">
-                <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#b0bfcc] transition-colors duration-150 group-focus-within:text-primary" />
+                <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant transition-colors duration-150 group-focus-within:text-primary" />
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Filter by Name, Serial, or ID..."
-                  className="pl-10 pr-4 py-2.5 text-[13px] rounded-xl w-64 placeholder:text-[#b8c8d8] focus:outline-none transition-all duration-150"
-                  style={{ background: "#f7f9fc", border: "1.5px solid #edf0f5", color: "#080f1e" }}
-                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #6090E3"; e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(96,144,227,0.10)"; }}
-                  onBlur={(e) => { e.currentTarget.style.border = "1.5px solid #edf0f5"; e.currentTarget.style.background = "#f7f9fc"; e.currentTarget.style.boxShadow = "none"; }}
+                  className="sa-input pl-10 pr-4 py-2.5 text-[13px] rounded-md w-64 placeholder:text-on-surface-variant"
                 />
               </div>
             </div>
@@ -107,48 +104,45 @@ export default function AssetInventoryPage() {
                 <select
                   value={f.value}
                   onChange={(e) => f.set(e.target.value)}
-                  className="px-3.5 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all duration-150 font-medium appearance-none cursor-pointer"
-                  style={{ background: "#f7f9fc", border: "1.5px solid #edf0f5", color: "#3a5070", minWidth: 160 }}
-                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #6090E3"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(96,144,227,0.10)"; }}
-                  onBlur={(e) => { e.currentTarget.style.border = "1.5px solid #edf0f5"; e.currentTarget.style.boxShadow = "none"; }}
+                  className="sa-input px-3.5 py-2.5 text-[13px] rounded-md transition-all duration-150 font-medium appearance-none cursor-pointer"
+                  style={{ minWidth: 160 }}
                 >
                   {f.options.map((o) => <option key={o}>{o}</option>)}
                 </select>
               </div>
             ))}
-            <div className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-xl" style={{ background: "rgba(96,144,227,0.07)", border: "1px solid rgba(96,144,227,0.16)" }}>
+            <div className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface">
               <Activity size={12} className="text-primary" />
-              <span className="text-[12px] font-bold text-[#1a4680]">{filtered.length} results</span>
+              <span className="text-[12px] font-bold text-primary">{filtered.length} results</span>
             </div>
           </div>
         </div>
 
         {/* Table */}
-        <div className="rounded-2xl overflow-hidden" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
-          <table className="w-full">
+        <div className="rounded-2xl overflow-hidden bg-surface-container-low p-2">
+          <table className="sa-table w-full">
             <thead>
-              <tr style={{ borderBottom: "1px solid #f0f4f8", background: "#fafbfe" }}>
+              <tr className="bg-surface-container-low">
                 {["Asset ID", "Name & Model", "Type", "Manufacturer", "Serial Number", "Status", ""].map((h) => (
-                  <th key={h} className="px-5 py-3.5 text-left text-[11px] font-bold text-[#8a9fb8] uppercase tracking-[0.08em]">
+                  <th key={h} className="px-5 py-3 text-left text-[11px] font-bold text-on-surface-variant uppercase tracking-[0.08em]">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {filtered.map((asset, i) => {
+              {filtered.map((asset) => {
                 const tc = typeColors[asset.type] ?? typeColors.OTHER;
                 return (
                   <tr
                     key={asset.id}
-                    style={{ borderBottom: i < filtered.length - 1 ? "1px solid #f7f9fc" : "none" }}
-                    className="transition-colors duration-100 hover:bg-[#f7fbff] group"
+                    className="bg-surface-container-lowest transition-colors duration-100 hover:bg-surface-container-low group"
                   >
-                    <td className="px-5 py-4 text-[12px] font-mono text-[#8a9fb8] font-medium">{asset.id}</td>
+                    <td className="px-5 py-4 text-[12px] font-mono text-on-surface-variant font-medium rounded-l-xl">{asset.id}</td>
                     <td className="px-5 py-4">
                       <Link href={`/admin/assets/${asset.id}`}>
-                        <p className="text-[13px] font-semibold text-[#080f1e] group-hover:text-primary transition-colors duration-150">{asset.name}</p>
-                        <p className="text-[11px] text-[#b0bfcc] mt-0.5">{asset.department}</p>
+                        <p className="text-[13px] font-semibold text-on-surface group-hover:text-primary transition-colors duration-150">{asset.name}</p>
+                        <p className="text-[11px] text-on-surface-variant mt-0.5">{asset.department}</p>
                       </Link>
                     </td>
                     <td className="px-5 py-4">
@@ -156,27 +150,22 @@ export default function AssetInventoryPage() {
                         {asset.type}
                       </span>
                     </td>
-                    <td className="px-5 py-4 text-[13px] text-[#5a7090]">{asset.manufacturer}</td>
-                    <td className="px-5 py-4 text-[12px] font-mono text-[#8a9fb8]">{asset.serialNumber}</td>
+                    <td className="px-5 py-4 text-[13px] text-on-surface-variant">{asset.manufacturer}</td>
+                    <td className="px-5 py-4 text-[12px] font-mono text-on-surface-variant">{asset.serialNumber}</td>
                     <td className="px-5 py-4">
                       <StatusBadge status={asset.status} dot />
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="px-5 py-4 rounded-r-xl">
                       <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                         {/* Assign button */}
                         <button
                           onClick={() => { setAssignAsset(asset); setSelectedUser(""); setUserSearch(""); }}
-                          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all duration-150"
-                          style={{ background: "rgba(96,144,227,0.1)", color: "#1a4680", border: "1px solid rgba(96,144,227,0.2)" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(96,144,227,0.18)"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(96,144,227,0.1)"; }}
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-bold transition-all duration-150 bg-surface-container-low text-primary hover:bg-secondary-container"
                         >
                           <UserCheck size={12} /> Assign
                         </button>
                         <button
-                          className="w-7 h-7 flex items-center justify-center rounded-lg text-[#b0bfcc] transition-all duration-150"
-                          onMouseEnter={(e) => { e.currentTarget.style.background = "#edf2fb"; e.currentTarget.style.color = "#6090E3"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#b0bfcc"; }}
+                          className="w-7 h-7 flex items-center justify-center rounded-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-all duration-150"
                         >
                           <MoreVertical size={14} />
                         </button>
@@ -189,35 +178,31 @@ export default function AssetInventoryPage() {
           </table>
 
           {/* Pagination */}
-          <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderTop: "1px solid #f0f4f8", background: "#fafbfe" }}>
-            <p className="text-[12px] text-[#8a9fb8]">
-              Showing <span className="font-bold text-[#3a5070]">{filtered.length}</span> of <span className="font-bold text-[#3a5070]">2,491</span> assets
+          <div className="px-5 py-3.5 flex items-center justify-between bg-surface-container-low rounded-xl">
+            <p className="text-[12px] text-on-surface-variant">
+              Showing <span className="font-bold text-on-surface">{filtered.length}</span> of <span className="font-bold text-on-surface">2,491</span> assets
             </p>
             <div className="flex items-center gap-1">
               <button
-                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#b0bfcc] transition-all duration-150"
-                onMouseEnter={(e) => { e.currentTarget.style.background = "#f0f4f8"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                className="w-7 h-7 flex items-center justify-center rounded-md text-on-surface-variant transition-all duration-150 hover:bg-surface hover:text-on-surface"
               >
                 <ChevronLeft size={14} />
               </button>
               {[1, 2, 3].map((p) => (
                 <button
                   key={p}
-                  className="w-7 h-7 flex items-center justify-center rounded-lg text-[13px] font-semibold transition-all duration-150"
+                  className="w-7 h-7 flex items-center justify-center rounded-md text-[13px] font-semibold transition-all duration-150"
                   style={p === 1
-                    ? { background: "linear-gradient(135deg, #1a4680, #6090E3)", color: "#ffffff", boxShadow: "0 2px 6px rgba(96,144,227,0.35)" }
-                    : { color: "#8a9fb8" }}
-                  onMouseEnter={(e) => { if (p !== 1) e.currentTarget.style.background = "#f0f4f8"; }}
+                    ? { background: "linear-gradient(135deg, #001d44, #00326b)", color: "#ffffff" }
+                    : { color: "#5e6678" }}
+                  onMouseEnter={(e) => { if (p !== 1) e.currentTarget.style.background = "#ffffff"; }}
                   onMouseLeave={(e) => { if (p !== 1) e.currentTarget.style.background = "transparent"; }}
                 >
                   {p}
                 </button>
               ))}
               <button
-                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#b0bfcc] transition-all duration-150"
-                onMouseEnter={(e) => { e.currentTarget.style.background = "#f0f4f8"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                className="w-7 h-7 flex items-center justify-center rounded-md text-on-surface-variant transition-all duration-150 hover:bg-surface hover:text-on-surface"
               >
                 <ChevronRight size={14} />
               </button>

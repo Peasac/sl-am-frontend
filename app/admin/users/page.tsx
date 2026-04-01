@@ -15,9 +15,9 @@ const avatarGradients = [
   "linear-gradient(135deg, #b45309, #fb923c)",
 ];
 
-const roleStyle: Record<string, { bg: string; color: string; border: string }> = {
-  ADMIN: { bg: "rgba(96,144,227,0.1)",  color: "#1a4680", border: "rgba(96,144,227,0.2)"  },
-  USER:  { bg: "rgba(18,183,106,0.08)", color: "#0a6644", border: "rgba(18,183,106,0.18)" },
+const roleStyle: Record<string, { bg: string; color: string }> = {
+  ADMIN: { bg: "rgba(96,144,227,0.1)",  color: "#1a4680" },
+  USER:  { bg: "rgba(18,183,106,0.08)", color: "#0a6644" },
 };
 
 const statsCards = [
@@ -27,12 +27,12 @@ const statsCards = [
 ];
 
 const focusOn  = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-  e.currentTarget.style.border = "1.5px solid #6090E3";
+  e.currentTarget.style.border = "1px solid #001d44";
   e.currentTarget.style.background = "#ffffff";
-  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(96,144,227,0.10)";
+  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(37,93,173,0.24)";
 };
 const focusOff = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-  e.currentTarget.style.border = "1.5px solid #edf0f5";
+  e.currentTarget.style.border = "1px solid rgba(195,198,209,0.15)";
   e.currentTarget.style.background = "#f7f9fc";
   e.currentTarget.style.boxShadow = "none";
 };
@@ -114,20 +114,17 @@ export default function UsersPage() {
         </div>
 
         {/* Filters */}
-        <div className="rounded-2xl p-4" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+        <div className="rounded-2xl p-4 bg-surface-container-low">
           <div className="flex gap-4 items-end flex-wrap">
             <div className="space-y-1.5">
               <label className="block text-[11px] font-bold text-[#8a9fb8] uppercase tracking-widest">Search</label>
               <div className="relative group">
-                <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#b0bfcc] transition-colors duration-150 group-focus-within:text-primary" />
+                <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant transition-colors duration-150 group-focus-within:text-primary" />
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Filter by name or email..."
-                  className="pl-10 pr-4 py-2.5 text-[13px] rounded-xl w-64 placeholder:text-[#b8c8d8] focus:outline-none transition-all duration-150"
-                  style={{ background: "#f7f9fc", border: "1.5px solid #edf0f5", color: "#080f1e" }}
-                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #6090E3"; e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(96,144,227,0.10)"; }}
-                  onBlur={(e) => { e.currentTarget.style.border = "1.5px solid #edf0f5"; e.currentTarget.style.background = "#f7f9fc"; e.currentTarget.style.boxShadow = "none"; }}
+                  className="sa-input pl-10 pr-4 py-2.5 text-[13px] rounded-md w-64 placeholder:text-on-surface-variant"
                 />
               </div>
             </div>
@@ -140,78 +137,73 @@ export default function UsersPage() {
                 <select
                   value={f.value}
                   onChange={(e) => f.set(e.target.value)}
-                  className="px-3.5 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all duration-150 font-medium appearance-none cursor-pointer"
-                  style={{ background: "#f7f9fc", border: "1.5px solid #edf0f5", color: "#3a5070", minWidth: 160 }}
-                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #6090E3"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(96,144,227,0.10)"; }}
-                  onBlur={(e) => { e.currentTarget.style.border = "1.5px solid #edf0f5"; e.currentTarget.style.boxShadow = "none"; }}
+                  className="sa-input px-3.5 py-2.5 text-[13px] rounded-md transition-all duration-150 font-medium appearance-none cursor-pointer"
+                  style={{ minWidth: 160 }}
                 >
                   {f.options.map((o) => <option key={o}>{o}</option>)}
                 </select>
               </div>
             ))}
-            <div className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-xl" style={{ background: "rgba(96,144,227,0.07)", border: "1px solid rgba(96,144,227,0.16)" }}>
+            <div className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface">
               <Activity size={12} className="text-primary" />
-              <span className="text-[12px] font-bold text-[#1a4680]">{filtered.length} users</span>
+              <span className="text-[12px] font-bold text-primary">{filtered.length} users</span>
             </div>
           </div>
         </div>
 
         {/* Table */}
-        <div className="rounded-2xl overflow-hidden" style={{ background: "#ffffff", border: "1px solid #edf0f5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
-          <table className="w-full">
+        <div className="rounded-2xl overflow-hidden bg-surface-container-low p-2">
+          <table className="sa-table w-full">
             <thead>
-              <tr style={{ borderBottom: "1px solid #f0f4f8", background: "#fafbfe" }}>
+              <tr className="bg-surface-container-low">
                 {["User", "Role", "Department", "Assets", "Last Login", ""].map((h) => (
-                  <th key={h} className="px-5 py-3.5 text-left text-[11px] font-bold text-[#8a9fb8] uppercase tracking-[0.08em]">
+                  <th key={h} className="px-5 py-3 text-left text-[11px] font-bold text-on-surface-variant uppercase tracking-[0.08em]">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {filtered.map((user, i) => {
+              {filtered.map((user) => {
                 const initials = user.name.split(" ").map((n) => n[0]).join("").slice(0, 2);
                 const gradIdx = user.id.charCodeAt(1) % avatarGradients.length;
                 const rs = roleStyle[user.role] ?? roleStyle.USER;
                 return (
                   <tr
                     key={user.id}
-                    style={{ borderBottom: i < filtered.length - 1 ? "1px solid #f7f9fc" : "none" }}
-                    className="transition-colors duration-100 hover:bg-[#f7fbff] group"
+                    className="bg-surface-container-lowest transition-colors duration-100 hover:bg-surface-container-low group"
                   >
-                    <td className="px-5 py-4">
+                    <td className="px-5 py-4 rounded-l-xl">
                       <div className="flex items-center gap-3">
                         <div
                           className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-[12px] font-bold shrink-0"
-                          style={{ background: avatarGradients[gradIdx], boxShadow: "0 2px 6px rgba(0,0,0,0.12)" }}
+                          style={{ background: avatarGradients[gradIdx] }}
                         >
                           {initials}
                         </div>
                         <div>
-                          <p className="text-[13px] font-semibold text-[#080f1e] group-hover:text-primary transition-colors duration-150">{user.name}</p>
-                          <p className="text-[11px] text-[#b0bfcc] mt-0.5">{user.email}</p>
+                          <p className="text-[13px] font-semibold text-on-surface group-hover:text-primary transition-colors duration-150">{user.name}</p>
+                          <p className="text-[11px] text-on-surface-variant mt-0.5">{user.email}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-5 py-4">
                       <span
                         className="px-2.5 py-1 rounded-lg text-[11px] font-bold tracking-wide"
-                        style={{ background: rs.bg, color: rs.color, border: `1px solid ${rs.border}` }}
+                        style={{ background: rs.bg, color: rs.color }}
                       >
                         {user.role}
                       </span>
                     </td>
-                    <td className="px-5 py-4 text-[13px] text-[#5a7090]">{user.department}</td>
+                    <td className="px-5 py-4 text-[13px] text-on-surface-variant">{user.department}</td>
                     <td className="px-5 py-4">
-                      <span className="text-[12px] font-bold text-[#080f1e]">{user.assetCount ?? 1}</span>
-                      <span className="text-[11px] text-[#b0bfcc] ml-1">assigned</span>
+                      <span className="text-[12px] font-bold text-on-surface">{user.assetCount ?? 1}</span>
+                      <span className="text-[11px] text-on-surface-variant ml-1">assigned</span>
                     </td>
-                    <td className="px-5 py-4 text-[12px] text-[#8a9fb8]">{user.lastLogin}</td>
-                    <td className="px-5 py-4">
+                    <td className="px-5 py-4 text-[12px] text-on-surface-variant">{user.lastLogin}</td>
+                    <td className="px-5 py-4 rounded-r-xl">
                       <button
-                        className="w-7 h-7 flex items-center justify-center rounded-lg text-[#b0bfcc] transition-all duration-150"
-                        onMouseEnter={(e) => { e.currentTarget.style.background = "#edf2fb"; e.currentTarget.style.color = "#6090E3"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#b0bfcc"; }}
+                        className="w-7 h-7 flex items-center justify-center rounded-md text-on-surface-variant transition-all duration-150 hover:bg-surface-container-low hover:text-primary"
                       >
                         <MoreVertical size={14} />
                       </button>
@@ -223,35 +215,31 @@ export default function UsersPage() {
           </table>
 
           {/* Pagination */}
-          <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderTop: "1px solid #f0f4f8", background: "#fafbfe" }}>
-            <p className="text-[12px] text-[#8a9fb8]">
-              Showing <span className="font-bold text-[#3a5070]">{filtered.length}</span> of <span className="font-bold text-[#3a5070]">1,284</span> users
+          <div className="px-5 py-3.5 flex items-center justify-between bg-surface-container-low rounded-xl">
+            <p className="text-[12px] text-on-surface-variant">
+              Showing <span className="font-bold text-on-surface">{filtered.length}</span> of <span className="font-bold text-on-surface">1,284</span> users
             </p>
             <div className="flex items-center gap-1">
               <button
-                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#b0bfcc] transition-all duration-150"
-                onMouseEnter={(e) => { e.currentTarget.style.background = "#f0f4f8"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                className="w-7 h-7 flex items-center justify-center rounded-md text-on-surface-variant transition-all duration-150 hover:bg-surface hover:text-on-surface"
               >
                 <ChevronLeft size={14} />
               </button>
               {[1, 2, 3].map((p) => (
                 <button
                   key={p}
-                  className="w-7 h-7 flex items-center justify-center rounded-lg text-[13px] font-semibold transition-all duration-150"
+                  className="w-7 h-7 flex items-center justify-center rounded-md text-[13px] font-semibold transition-all duration-150"
                   style={p === 1
-                    ? { background: "linear-gradient(135deg, #1a4680, #6090E3)", color: "#ffffff", boxShadow: "0 2px 6px rgba(96,144,227,0.35)" }
-                    : { color: "#8a9fb8" }}
-                  onMouseEnter={(e) => { if (p !== 1) e.currentTarget.style.background = "#f0f4f8"; }}
+                    ? { background: "linear-gradient(135deg, #001d44, #00326b)", color: "#ffffff" }
+                    : { color: "#5e6678" }}
+                  onMouseEnter={(e) => { if (p !== 1) e.currentTarget.style.background = "#ffffff"; }}
                   onMouseLeave={(e) => { if (p !== 1) e.currentTarget.style.background = "transparent"; }}
                 >
                   {p}
                 </button>
               ))}
               <button
-                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#b0bfcc] transition-all duration-150"
-                onMouseEnter={(e) => { e.currentTarget.style.background = "#f0f4f8"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                className="w-7 h-7 flex items-center justify-center rounded-md text-on-surface-variant transition-all duration-150 hover:bg-surface hover:text-on-surface"
               >
                 <ChevronRight size={14} />
               </button>
