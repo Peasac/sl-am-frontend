@@ -15,10 +15,17 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  CardDescription,
+  CardFooter
 } from "@/components/ui/card"
+import {ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,} from "@/components/ui/chart"
 import { Button } from "@/components/ui/button"
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts"
+import { count } from "console";
 
-// ── Data ─────────────────────────────────────────────────────────────────────
 
 const topStats = [
   {
@@ -35,12 +42,12 @@ const topStats = [
   },
 ];
 
-const categoryBars = [
-  { label: "Laptops",      count: 1104, pct: 72, color: "#6090E3", trackBg: "rgba(96,144,227,0.1)"  },
-  { label: "Monitors",     count: 640,  pct: 52, color: "#818cf8", trackBg: "rgba(129,140,248,0.1)" },
-  { label: "Servers",      count: 320,  pct: 36, color: "#34d399", trackBg: "rgba(52,211,153,0.1)"  },
-  { label: "Network",      count: 280,  pct: 28, color: "#fb923c", trackBg: "rgba(251,146,60,0.1)"  },
-  { label: "Workstations", count: 147,  pct: 18, color: "#a78bfa", trackBg: "rgba(167,139,250,0.1)" },
+const chartData = [
+  { label: "Laptops",      count: 1104, pct: 72, color: "#6090E3", trackBg: "rgba(96,144,227,0.1)", assigned:1000  },
+  { label: "Monitors",     count: 640,  pct: 52, color: "#818cf8", trackBg: "rgba(129,140,248,0.1)", assigned:500 },
+  { label: "Servers",      count: 320,  pct: 36, color: "#34d399", trackBg: "rgba(52,211,153,0.1)"  ,assigned:100},
+  { label: "Network",      count: 280,  pct: 28, color: "#fb923c", trackBg: "rgba(251,146,60,0.1)" , assigned:200 },
+  { label: "Workstations", count: 147,  pct: 18, color: "#a78bfa", trackBg: "rgba(167,139,250,0.1)" , assigned:47}
 ];
 
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -170,7 +177,20 @@ function PieChart({ slices }: { slices: { label: string; value: number; color: s
     </svg>
   );
 }
-
+const chartConfig = {
+  count: {
+    label: "count",
+    color: "#2563eb",
+  },
+  assigned:{
+    label:"assigned",
+    color:"#6090E3"
+  }
+  // mobile: {
+  //   label: "Mobile",
+  //   color: "#60a5fa",
+  // },
+} satisfies ChartConfig
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function AdminDashboard() {
@@ -226,17 +246,76 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-3 gap-4">
 
           {/* Asset distribution */}
-          <div className="sa-card col-span-2 rounded-2xl p-5 shadow-none">
+          <Card className="col-span-2">
+      <CardHeader>
+        <CardTitle className="text-[22px] font-semibold primary text-on-surface font-manrope tracking-tight">Asset comparison by category</CardTitle>
+        <CardDescription>Current Status</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={chartConfig}>
+          <BarChart
+            accessibilityLayer
+            data={chartData}
+            margin={{
+              top: 20,
+            }}
+          >
+            <CartesianGrid
+              vertical={false}
+              stroke="var(--on-surface-variant)"
+              strokeOpacity={0.08}
+              strokeWidth={1.4}
+            />
+            <XAxis
+              dataKey="label"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Bar dataKey="count" fill="var(--color-primary)" radius={8}>
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
+            <Bar dataKey="assigned" fill="#60a5fa" radius={8}>
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+      <CardFooter className="flex-col items-start gap-2 text-sm">
+        <div className="flex gap-2 font-medium leading-none">
+          Total vs Assigned
+        </div>
+        <div className="leading-none text-muted-foreground">
+          Showing number of assets assigned to the total assets of a particular category
+        </div>
+      </CardFooter>
+    </Card>
+          {/* <div className="sa-card col-span-2 rounded-2xl p-5 shadow-none">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
-                {/* <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(96,144,227,0.1)" }}>
                   <Activity size={12} className="text-primary" />
-                </div> */}
+                </div>
                 <p className="text-[22px] font-bold text-on-surface tracking-tight">By Category</p>
               </div>
-              {/* <span className="text-[10px] font-bold text-primary uppercase tracking-[0.08em] px-2.5 py-1 rounded-lg bg-secondary-container">
+              <span className="text-[10px] font-bold text-primary uppercase tracking-[0.08em] px-2.5 py-1 rounded-lg bg-secondary-container">
                 2,491 total
-              </span> */}
+              </span>
             </div>
             <div className="space-y-3.5">
               {categoryBars.map((bar) => (
@@ -265,7 +344,7 @@ export default function AdminDashboard() {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* User insights */}
           {/* <div className="sa-card rounded-2xl p-5 shadow-none">
